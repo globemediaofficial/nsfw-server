@@ -6,10 +6,10 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "nsfwjs": "^2.4.0",
-    "@tensorflow/tfjs-node": "^4.9.0",
-    "canvas": "^2.12.1",
-    "multer": "^1.4.5"
+    "express": "5.1.0",
+    "nsfwjs": "4.2.1",
+    "@tensorflow/tfjs-node": "4.22.0",
+    "canvas": "3.2.0",
+    "multer": "2.0.2"
   }
 }
