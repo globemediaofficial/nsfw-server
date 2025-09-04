@@ -1,9 +1,8 @@
-import express from "express";
-import nsfwjs from "nsfwjs/dist/cjs/index.js";
-import * as tf from "@tensorflow/tfjs-node";
-import { createCanvas, loadImage } from "canvas";
-import multer from "multer";
 import { Buffer } from "buffer";
+import { createCanvas, loadImage } from "canvas";
+import express from "express";
+import multer from "multer";
+import nsfwjs from "./node_modules/nsfwjs/dist/cjs/index.js";
 globalThis.Buffer = Buffer;
 
 const app = express();
@@ -22,7 +21,8 @@ function classify(predictions) {
   const nsfwScore = predictions
     .filter((p) => ["Porn", "Hentai", "Sexy"].includes(p.className))
     .reduce((sum, p) => sum + p.probability, 0);
-  const safeScore = predictions.find((p) => p.className === "Neutral")?.probability || 0;
+  const safeScore =
+    predictions.find((p) => p.className === "Neutral")?.probability || 0;
 
   if (nsfwScore > 0.7) return "nsfw";
   if (safeScore > 0.7) return "safe";
@@ -30,21 +30,25 @@ function classify(predictions) {
 }
 
 app.post("/upload", upload.single("image"), async (req, res) => {
+  console.log("Received file:", req.file?.originalname, req.file?.mimetype);
   if (!model) return res.status(503).json({ error: "Model not loaded yet" });
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
   try {
     const img = await loadImage(req.file.buffer);
+    console.log("Image loaded:", img.width, img.height);
+
     const canvas = createCanvas(img.width, img.height);
     const ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0);
 
     const predictions = await model.classify(canvas);
-    const result = classify(predictions);
+    console.log("Predictions:", predictions);
 
+    const result = classify(predictions);
     res.json({ result, predictions });
   } catch (err) {
-    console.error(err);
+    console.error("Classification error:", err);
     res.status(500).json({ error: "Failed to classify image" });
   }
 });
