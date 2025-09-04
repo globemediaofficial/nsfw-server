@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy app code
+# Copy everything else after installing dependencies
 COPY . .
 
 # Expose port
