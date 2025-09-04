@@ -3,6 +3,8 @@ import nsfwjs from "nsfwjs";
 import * as tf from "@tensorflow/tfjs-node";
 import { createCanvas, loadImage } from "canvas";
 import multer from "multer";
+import { Buffer } from "buffer";
+globalThis.Buffer = Buffer;
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
