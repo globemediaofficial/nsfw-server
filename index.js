@@ -1,5 +1,5 @@
 import express from "express";
-import nsfwjs from "nsfwjs";
+import nsfwjs from "nsfwjs/dist/cjs/index.js";
 import * as tf from "@tensorflow/tfjs-node";
 import { createCanvas, loadImage } from "canvas";
 import multer from "multer";
