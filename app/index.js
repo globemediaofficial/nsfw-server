@@ -49,5 +49,5 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 
 app.get("/", (_, res) => res.send("NSFW server is running!"));
 
-const PORT = 2400;
+const PORT = process.env.PORT || 2400;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
