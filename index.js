@@ -21,8 +21,10 @@ function classify(predictions) {
   const nsfwScore = predictions
     .filter((p) => ["Porn", "Hentai", "Sexy"].includes(p.className))
     .reduce((sum, p) => sum + p.probability, 0);
-  const safeScore =
-    predictions.find((p) => ["Neutral", "Drawing"].includes(p.className))?.probability || 0;
+
+  const safeScore = predictions
+    .filter((p) => ["Neutral", "Drawing"].includes(p.className))
+    .reduce((sum, p) => sum + p.probability, 0);
 
   if (nsfwScore > 0.7) return "nsfw";
   if (safeScore > 0.7) return "safe";
